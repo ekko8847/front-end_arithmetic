@@ -29,6 +29,7 @@ const isValid=function(s){
   //栈必须是空的
   return stack.length===0;
 }
-console.log(isValid('()'));
-console.log(isValid('({)}'));
-console.log(isValid('({})'));
+// console.log(isValid('()'));
+// console.log(isValid('({)}'));
+console.log(isValid("()[]{}"));
+// console.log(isValid('()[]{}'));
