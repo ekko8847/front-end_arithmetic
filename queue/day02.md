@@ -17,3 +17,45 @@ js异步中的任务队列
 计算最近的请求次数......<br>
 ![avatar](../assets/async-queue.png)
 
+### for while do-while 循环理解
+
+for 循环: 适合用于已知循环次数的情况下，通常使用 for 来遍历数组或者对象中的元素。
+
+```javascript
+// 遍历数组
+const arr = [1, 2, 3, 4, 5];
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+
+// 遍历对象
+const obj = { a: 1, b: 2, c: 3 };
+for (const key in obj) {
+  console.log(key + ': ' + obj[key]);
+}
+
+```
+
+while 循环: 当我们无法预知循环次数时，可以使用 while 循环，它会在循环体内部执行一定的逻辑，根据逻辑结果来判断是否继续循环。
+
+```javascript
+// 随机产生一个数，直到产生的数大于 0.5
+let randomNum;
+while ((randomNum = Math.random()) < 0.5) {
+  console.log(randomNum);
+}
+```
+
+do-while 循环: 与 while 循环类似，不同之处在于 do-while 循环会先执行一次循环体，再判断是否继续循环。
+
+```javascript
+// 随机产生一个数，至少会执行一次循环体
+let randomNum;
+do {
+  randomNum = Math.random();
+  console.log(randomNum);
+} while (randomNum < 0.5);
+```
+
+总的来说，for 循环适用于已知循环次数的情况，
+while 循环适用于无法预知循环次数的情况，而 do-while 循环适用于至少需要执行一次循环体的情况。
