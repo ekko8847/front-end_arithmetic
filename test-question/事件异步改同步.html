@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件异步改为同步</title>
+  </head>
+  <button class="button">按钮</button>
+  <body>
+    <script>
+      function getElements(cssSelector) {
+        const dom = document.querySelector(cssSelector)
+        const domProxy = new Proxy(dom, {
+          get(target, key) {
+            if (!key.startsWith('wait')) {
+              return target[key]
+            }
+            const event = key.replace('wait', '').toLowerCase()
+            return new Promise((resolve) => {
+              dom.addEventListener(event, resolve, { once: true })
+            })
+          },
+        })
+        return domProxy
+      }
+      ;(async () => {
+        const btn = getElements('button')
+        while(1){
+        await btn.waitClick;
+        console.log(btn);
+        console.log('按钮被点击了')
+        }
+/*         for (let index = 0; index < 10; index++) {
+          const e = await btn.waitClick
+          console.log('按钮被点击了', e)
+        } */
+      })()
+    </script>
+  </body>
+</html>
