@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebGL 3D球体</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="webglCanvas" width="800" height="600"></canvas>
+
+    <script>
+        // 获取 WebGL 上下文
+        var canvas = document.getElementById("webglCanvas");
+        var gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+
+        // 创建顶点着色器
+        var vertexShaderSource = `
+            attribute vec3 position;
+            void main() {
+                gl_Position = vec4(position, 1.0);
+            }
+        `;
+        var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vertexShader, vertexShaderSource);
+        gl.compileShader(vertexShader);
+
+        // 创建片段着色器
+        var fragmentShaderSource = `
+            precision mediump float;
+            uniform vec4 color;
+            void main() {
+                gl_FragColor = color;
+            }
+        `;
+        var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fragmentShader, fragmentShaderSource);
+        gl.compileShader(fragmentShader);
+
+        // 创建着色器程序
+        var shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+        gl.useProgram(shaderProgram);
+
+        // 定义球体的顶点数据
+        var radius = 0.5;
+        var latitudeBands = 30;
+        var longitudeBands = 30;
+        var vertices = [];
+        for (var latNumber = 0; latNumber <= latitudeBands; latNumber++) {
+            var theta = latNumber * Math.PI / latitudeBands;
+            var sinTheta = Math.sin(theta);
+            var cosTheta = Math.cos(theta);
+
+            for (var longNumber = 0; longNumber <= longitudeBands; longNumber++) {
+                var phi = longNumber * 2 * Math.PI / longitudeBands;
+                var sinPhi = Math.sin(phi);
+                var cosPhi = Math.cos(phi);
+
+                var x = cosPhi * sinTheta;
+                var y = cosTheta;
+                var z = sinPhi * sinTheta;
+
+                vertices.push(radius * x, radius * y, radius * z);
+            }
+        }
+
+        // 创建顶点缓冲区
+        var vertexBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+        // 获取顶点着色器中的位置属性
+        var positionAttributeLocation = gl.getAttribLocation(shaderProgram, "position");
+        gl.enableVertexAttribArray(positionAttributeLocation);
+        gl.vertexAttribPointer(positionAttributeLocation, 3, gl.FLOAT, false, 0, 0);
+
+        // 设置颜色
+        var colorUniformLocation = gl.getUniformLocation(shaderProgram, "color");
+        gl.uniform4f(colorUniformLocation, 1.0, 0.0, 0.0, 1.0); // 设置为红色
+
+        // 渲染球体
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 3);
+    </script>
+</body>
+</html>
