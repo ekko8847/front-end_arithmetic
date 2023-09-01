@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas test</title>
+</head>
+<body>
+  <canvas id="myCanvas" width="400" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // 绘制背景
+    ctx.fillStyle = "#87CEEB"; // 浅蓝色
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 绘制一个简单的人物头像
+    ctx.beginPath();
+    ctx.arc(200, 200, 80, 0, 2 * Math.PI);
+    ctx.fillStyle = "#FFD700"; // 金色
+    ctx.fill();
+
+    // 绘制眼睛
+    ctx.beginPath();
+    ctx.arc(180, 180, 15, 0, 2 * Math.PI);
+    ctx.arc(220, 180, 15, 0, 2 * Math.PI);
+    ctx.fillStyle = "#000"; // 黑色
+    ctx.fill();
+
+    // 绘制嘴巴
+    ctx.beginPath();
+    ctx.arc(200, 220, 40, 0, Math.PI, false);
+    ctx.strokeStyle = "#000"; // 黑色
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    // 绘制文字
+    ctx.font = "24px Arial";
+    ctx.fillStyle = "#000"; // 黑色
+    ctx.fillText("League of Legends", 100, 350);
+  </script>
+</body>
+</html>
