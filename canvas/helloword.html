@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="myCanvas" width="400" height="200"></canvas>
+</body>
+<script>
+  // 汉字的笔画数据，每一笔是一个二维数组，表示从起点到终点的路径
+const hanziStrokes = [
+  // 你
+  [[50, 100], [100, 50]],
+  [[100, 50], [150, 100]],
+  [[100, 50], [100, 150]],
+  // 好
+  [[200, 50], [200, 150]],
+  [[200, 50], [250, 50]],
+  [[200, 100], [250, 100]],
+  [[200, 150], [250, 150]],
+  // ，
+  [[300, 100], [300, 150]],
+  // 世
+  [[350, 50], [400, 50]],
+  [[350, 100], [400, 100]],
+  [[350, 100], [350, 150]],
+  [[350, 150], [400, 150]],
+  // 界
+  [[450, 50], [500, 50]],
+  [[450, 100], [500, 100]],
+  [[450, 150], [500, 150]],
+  [[450, 150], [500, 100]],
+  [[500, 50], [500, 150]]
+];
+
+// 获取 Canvas 元素和绘图上下文
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+// 设置绘制样式
+ctx.lineWidth = 5;
+ctx.strokeStyle = 'black';
+
+// 逐笔绘制汉字
+function drawHanZi() {
+  let currentStroke = 0;
+  let currentPoint = 0;
+
+  function drawNextPoint() {
+    const stroke = hanziStrokes[currentStroke];
+    const point = stroke[currentPoint];
+
+    ctx.beginPath();
+    ctx.moveTo(point[0], point[1]);
+
+    currentPoint++;
+
+    if (currentPoint < stroke.length) {
+      const nextPoint = stroke[currentPoint];
+      ctx.lineTo(nextPoint[0], nextPoint[1]);
+      ctx.stroke();
+      requestAnimationFrame(drawNextPoint);
+    } else {
+      currentStroke++;
+      currentPoint = 0;
+
+      if (currentStroke < hanziStrokes.length) {
+        requestAnimationFrame(drawNextPoint);
+      }
+    }
+  }
+
+  drawNextPoint();
+}
+
+// 开始绘制汉字
+drawHanZi();
+</script>
+</html>
