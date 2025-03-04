@@ -329,10 +329,10 @@ class EventCenter {
     // 当数据不相等时才更新
     if (eventInfo && eventInfo.data !== data) {
       eventInfo.data = data
-      // 遍历执行所有绑定函数
-      for (const f of eventInfo.callbacks) {
-        f(data)
-      }
+    }
+    // 遍历执行所有绑定函数
+    for (const f of eventInfo.callbacks) {
+      f(data)
     }
   }
 }
